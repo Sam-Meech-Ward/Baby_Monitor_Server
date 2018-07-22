@@ -11,6 +11,11 @@ const config = {
   http: {
     port: 8000,
     allow_origin: '*'
+  },
+  auth: {
+    play: true,
+    publish: true,
+    secret: process.env.NODE_MEDIA_PRIVATE_KEY || 'privateKey'
   }
 };
  

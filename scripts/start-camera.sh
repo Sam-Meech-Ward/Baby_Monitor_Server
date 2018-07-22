@@ -1,8 +1,16 @@
 #!/bin/bash
 
-# https://www.lifewire.com/pass-arguments-to-bash-script-2200571
+# Make sure the NODE_MEDIA_PRIVATE_KEY environment variable is set
+if [ -z ${NODE_MEDIA_PRIVATE_KEY+x} ]; then
+  echo "Make sure you set the NODE_MEDIA_PRIVATE_KEY is set";
+  exit -1;
+fi
 
 SERVER_IP_ADDRESS="192.168.1.71"
+NODE_MEDIA_EXPIRATION=$(($(date +%s) * 2))
+NODE_MEDIA_ROUTE="/live/monitor"
+NODE_MEDIA_HASH_VALUE=$(echo -n "$NODE_MEDIA_ROUTE-$NODE_MEDIA_EXPIRATION-$NODE_MEDIA_PRIVATE_KEY" | md5sum | awk '{print $1}')
+NODE_MEDIA_SIGNED="?sign=$NODE_MEDIA_EXPIRATION-$NODE_MEDIA_HASH_VALUE"
 
 local=false
 cloud=false
@@ -24,25 +32,25 @@ killProcesses() {
 startFFmpegLocal() {
   ffmpeg -i tcp://127.0.0.1:8181?listen \
   -c:v copy -c:a aac -ar 44100 -ab 40000 \
-  -f flv rtmp://127.0.0.1:4000/live/monitor &
+  -f flv "rtmp://127.0.0.1:4000$NODE_MEDIA_ROUTE$NODE_MEDIA_SIGNED" &
   sleep 2
 }
 startFFmpegCloud() {
   ffmpeg -i tcp://127.0.0.1:8181?listen \
   -c:v copy -c:a aac -ar 44100 -ab 40000 \
-  -f flv "rtmp://$SERVER_IP_ADDRESS/live/monitor" &
+  -f flv "rtmp://$SERVER_IP_ADDRESS$NODE_MEDIA_ROUTE$NODE_MEDIA_SIGNED" &
   sleep 2
 }
 startFFmpegLocalAndCloud() {
   ffmpeg -i tcp://127.0.0.1:8181?listen \
   -c:v copy -c:a aac -ar 44100 -ab 40000 \
-  -f flv rtmp://127.0.0.1:4000/live/monitor \
+  -f flv "rtmp://127.0.0.1:4000$NODE_MEDIA_ROUTE$NODE_MEDIA_SIGNED" \
   -c:v copy -c:a aac -ar 44100 -ab 40000 \
-  -f flv "rtmp://$SERVER_IP_ADDRESS/live/monitor" &
+  -f flv "rtmp://$SERVER_IP_ADDRESS$NODE_MEDIA_ROUTE$NODE_MEDIA_SIGNED" &
   sleep 2
 }
 startPiCam() {
-  # ~/picam/picam --alsadev hw:1,0 --tcpout tcp://127.0.0.1:8181 &
+  ~/picam/picam --alsadev hw:1,0 --tcpout tcp://127.0.0.1:8181 &
 }
 
 
