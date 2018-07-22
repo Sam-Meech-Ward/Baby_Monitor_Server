@@ -1,13 +1,22 @@
 const express = require('express');
 
-exports = (nodeMediaPrivateKey) => {
-  const app = express();
+let videoURL = "";
 
-  app.use(express.static('public'));
+const app = express();
 
-  const start = () => {
-    app.listen(3333);
-  };
+app.use('view engine', 'ejs');
 
-  return {start};
+app.get('/', (res, req) => {
+  res.render('index', {videoURL});
+});
+
+app.post('/video/:url', (res, req) => {
+  videoURL = res.params.url;
+  res.json('index', {videoURL});
+})
+
+app.use(express.static('public'));
+
+exports.start = () => {
+  app.listen(3333);
 };
