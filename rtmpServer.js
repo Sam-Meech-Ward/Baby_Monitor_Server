@@ -1,6 +1,6 @@
 const { NodeMediaServer } = require('node-media-server');
  
-exports = (nodeMediaPrivateKey) => {
+module.exports = (nodeMediaPrivateKey) => {
   const config = {
     rtmp: {
       port: 4000,

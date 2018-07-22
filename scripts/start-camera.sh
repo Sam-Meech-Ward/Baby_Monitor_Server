@@ -34,6 +34,8 @@ startFFmpegLocal() {
   -c:v copy -c:a aac -ar 44100 -ab 40000 \
   -f flv "rtmp://127.0.0.1:4000$NODE_MEDIA_ROUTE$NODE_MEDIA_SIGNED" &
   sleep 2
+
+  curl --request POST "http://127.0.0.1:3333/video$NODE_MEDIA_ROUTE$NODE_MEDIA_SIGNED"
 }
 startFFmpegCloud() {
   ffmpeg -i tcp://127.0.0.1:8181?listen \

@@ -6,7 +6,7 @@ function setupLiveStream() {
         isLive: true,
         hasVideo: true,
         hasVideo: true,
-        url: 'ws://192.168.1.71:8000/live/monitor.flv'
+        url: videoURL
     });
     flvPlayer.attachMediaElement(videoElement);
     flvPlayer.load();
