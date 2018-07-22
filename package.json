@@ -4,13 +4,14 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.16.3",
     "node-media-server": "^1.4.3"
   },
   "devDependencies": {},
   "scripts": {
     "start": "./scripts/start.sh",
-    "server-build": "node app.js", 
+    "server-build": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

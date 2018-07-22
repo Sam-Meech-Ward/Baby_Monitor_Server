@@ -1,9 +1,13 @@
 const express = require('express');
 
-const app = express();
+exports = (nodeMediaPrivateKey) => {
+  const app = express();
 
-app.use(express.static('public'));
+  app.use(express.static('public'));
 
-exports.start = () => {
-  app.listen(3333);
+  const start = () => {
+    app.listen(3333);
+  };
+
+  return {start};
 };
