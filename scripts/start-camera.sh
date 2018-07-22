@@ -35,7 +35,11 @@ startFFmpegLocal() {
   -f flv "rtmp://127.0.0.1:4000$NODE_MEDIA_ROUTE$NODE_MEDIA_SIGNED" &
   sleep 2
 
-  curl --request POST "http://127.0.0.1:3333/video$NODE_MEDIA_ROUTE$NODE_MEDIA_SIGNED"
+  wsURL="ws://192.168.1.71:8000$NODE_MEDIA_ROUTE.flv$NODE_MEDIA_SIGNED";
+  curl --request POST \
+  --header "Content-Type: application/json" \
+  -d "{\"wsURL\": \"$wsURL\"}" \
+  "http://127.0.0.1:3333/video-url"
 }
 startFFmpegCloud() {
   ffmpeg -i tcp://127.0.0.1:8181?listen \

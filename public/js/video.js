@@ -7,6 +7,8 @@ function setupLiveStream() {
         hasVideo: true,
         hasVideo: true,
         url: videoURL
+    }, {
+      enableStashBuffer: false // for lower latency
     });
     flvPlayer.attachMediaElement(videoElement);
     flvPlayer.load();
