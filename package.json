@@ -9,7 +9,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "./scripts/start.sh", 
+    "start": "./scripts/start.sh",
+    "server-build": "node app.js", 
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
