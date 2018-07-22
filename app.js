@@ -1,5 +1,5 @@
-const httpServer = require('httpServer');
-const rtmpServer = require('rtmpServer');
+const httpServer = require('./httpServer');
+const rtmpServer = require('./rtmpServer');
 
 
 httpServer.start();
