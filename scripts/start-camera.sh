@@ -4,6 +4,19 @@
 
 SERVER_IP_ADDRESS="192.168.1.71"
 
+local=false
+cloud=false
+
+while getopts lci: option
+do
+case "${option}"
+in
+l) local=true;;
+c) cloud=true;;
+i) SERVER_IP_ADDRESS=${OPTARG};;
+esac
+done
+
 killProcesses() {
   killall picam --wait;
   killall ffmpeg --wait;
@@ -29,20 +42,10 @@ startFFmpegLocalAndCloud() {
   sleep 2
 }
 startPiCam() {
-  ~/picam/picam --alsadev hw:1,0 --tcpout tcp://127.0.0.1:8181 &
+  # ~/picam/picam --alsadev hw:1,0 --tcpout tcp://127.0.0.1:8181 &
 }
 
-local=false
-cloud=false
 
-while getopts lc option
-do
-case "${option}"
-in
-l) local=true;;
-c) cloud=true;;
-esac
-done
 
 killProcesses
 
