@@ -1,15 +1,14 @@
+const fs = require('fs');
+const http = require('http');
+const https = require('https');
 const express = require('express');
 
 let videoURL = "ws://192.168.1.71:8000/live/monitor.flv";
 
 const app = express();
-
 const bodyParser = require('body-parser');
-
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
-
-
 app.set('view engine', 'ejs');
 
 app.get('/', (req, res) => {
@@ -25,5 +24,13 @@ app.post('/video-url', (req, res) => {
 app.use(express.static('public'));
 
 exports.start = () => {
-  app.listen(3333);
+  const privateKey  = fs.readFileSync('./privatekey.pem', 'utf8');
+  const certificate = fs.readFileSync('./certificate.pem', 'utf8');
+  const credentials = {key: privateKey, cert: certificate};
+
+  const httpServer = http.createServer(app);
+  const httpsServer = https.createServer(credentials, app);
+
+  httpServer.listen(3333);
+  httpsServer.listen(3443);
 };
