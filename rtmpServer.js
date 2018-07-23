@@ -9,10 +9,6 @@ module.exports = (nodeMediaPrivateKey) => {
       ping: 60,
       ping_timeout: 30
     },
-    http: {
-      port: 8000,
-      allow_origin: '*'
-    },
     https: {
       port: 8443,
       key:'./privatekey.pem',
@@ -24,6 +20,13 @@ module.exports = (nodeMediaPrivateKey) => {
       secret: nodeMediaPrivateKey
     }
   };
+
+  if (!process.env.SSL_ONLY) {
+    config.http = {
+      port: 8000,
+      allow_origin: '*'
+    };
+  }
 
   const start = () => {
     var nms = new NodeMediaServer(config)
