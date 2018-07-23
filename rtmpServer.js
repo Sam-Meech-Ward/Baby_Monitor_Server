@@ -9,11 +9,6 @@ module.exports = (nodeMediaPrivateKey) => {
       ping: 60,
       ping_timeout: 30
     },
-    https: {
-      port: 8443,
-      key:'./privatekey.pem',
-      cert:'./certificate.pem',
-    },
     auth: {
       play: true,
       publish: true,
@@ -22,6 +17,12 @@ module.exports = (nodeMediaPrivateKey) => {
   };
 
   if (!process.env.SSL_ONLY) {
+    config.https = {
+      port: 8443,
+      key:'./privatekey.pem',
+      cert:'./certificate.pem',
+    };
+  } else {
     config.http = {
       port: 8000,
       allow_origin: '*'
