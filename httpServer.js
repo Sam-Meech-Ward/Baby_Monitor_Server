@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/video-url', (req, res) => {
+  // The pi will have to send this url to the server when it start streaming
   videoURL = req.body.wsURL;
   res.send({videoURL});
 })
