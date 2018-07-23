@@ -13,6 +13,11 @@ module.exports = (nodeMediaPrivateKey) => {
       port: 8000,
       allow_origin: '*'
     },
+    https: {
+      port: 8443,
+      key:'./privatekey.pem',
+      cert:'./certificate.pem',
+    },
     auth: {
       play: true,
       publish: true,
