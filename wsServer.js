@@ -1,13 +1,23 @@
 const WebSocket = require('ws');
 
 let pi = null;
+let streamStarted = false;
 
 function startStream() {
-  pi.send("start-stream");
+  if (streamStarted) {
+    return;
+  }
+  if (pi) {
+    pi.send("start-stream");
+  }
+  streamStarted = true;
 }
 
 function endStream() {
-  pi.send("end-stream");
+  if (pi) {
+    pi.send("end-stream");
+  }
+  streamStarted = false;
 }
 
 function connectedToClient(wss, ws) {
@@ -33,6 +43,11 @@ function connectedToPi(wss, pi) {
 
   pi.on('message', function incoming(message) {
     console.log("message from pi", message);
+  });
+
+  pi.on('close', function close() {
+    pi = null;
+    endStream();
   });
 
   pi.on('error',  (error) => {
