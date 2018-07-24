@@ -52,19 +52,24 @@ app.post('/video-url', (req, res) => {
 
 app.use(express.static('public'));
 
-exports.start = () => {
 
-  const httpServer = http.createServer(app);
-  httpServer.listen(3333);
+const httpServer = http.createServer(app);
+httpServer.listen(3333);
+exports.httpServer = httpServer;
 
-  if (!process.env.SSL_ONLY) {
-    return;
-  }
-
+let httpsServer;
+if (process.env.SSL_ONLY) {
   const privateKey  = fs.readFileSync('./privatekey.pem', 'utf8');
   const certificate = fs.readFileSync('./certificate.pem', 'utf8');
   const credentials = {key: privateKey, cert: certificate};
-  const httpsServer = https.createServer(credentials, app);
-  httpsServer.listen(3443);
-  
+  httpsServer = https.createServer(credentials, app);
+  exports.httpsServer = httpsServer;
+}
+
+
+exports.start = () => {
+  httpServer.listen(3333);
+  if (httpsServer) {
+    httpsServer.listen(3443);
+  }
 };

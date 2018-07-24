@@ -9,7 +9,8 @@
     "cookie-session": "^2.0.0-beta.3",
     "ejs": "^2.6.1",
     "express": "^4.16.3",
-    "node-media-server": "^1.4.3"
+    "node-media-server": "^1.4.3",
+    "ws": "^6.0.0"
   },
   "devDependencies": {},
   "scripts": {
