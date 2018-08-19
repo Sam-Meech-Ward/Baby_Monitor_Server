@@ -1,10 +1,8 @@
-const fs = require('fs');
-const http = require('http');
-const https = require('https');
-const express = require('express');
+const path = require('path');
+
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
-var bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 
 let videoURL = "ws://192.168.1.71:8000/live/monitor.flv";
 
@@ -19,6 +17,7 @@ module.exports = (app) => {
   }));
 
   app.set('view engine', 'ejs');
+  app.set('views', path.join(__dirname, '../../views'));
 
   app.get('/', (req, res) => {
     if (process.env.MAIN_USER_USERNAME && (req.session.username === process.env.MAIN_USER_USERNAME)) {
@@ -48,29 +47,5 @@ module.exports = (app) => {
     // The pi will have to send this url to the server when it start streaming
     videoURL = req.body.wsURL;
     res.send({videoURL});
-  })
-
-  // app.use(express.static('public'));
-
-
-  // const httpServer = http.createServer(app);
-  // httpServer.listen(3333);
-  // exports.httpServer = httpServer;
-
-  // let httpsServer;
-  // if (process.env.SSL_ONLY) {
-  //   const privateKey  = fs.readFileSync('./privatekey.pem', 'utf8');
-  //   const certificate = fs.readFileSync('./certificate.pem', 'utf8');
-  //   const credentials = {key: privateKey, cert: certificate};
-  //   httpsServer = https.createServer(credentials, app);
-  //   exports.httpsServer = httpsServer;
-  // }
-
-
-  // exports.start = () => {
-  //   httpServer.listen(3333);
-  //   if (httpsServer) {
-  //     httpsServer.listen(3443);
-  //   }
-  // };
+  });
 };

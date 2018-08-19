@@ -75,6 +75,12 @@ class NodeHttpServer {
     });
   }
 
+  wsOnConnect(ws, req) {
+    req.nmsConnectionType = 'ws';
+    wsOnConnect(req, ws);
+  }
+
+
   onConnect(req, res) {
     let session = new NodeFlvSession(this.config, req, res);
     session.run();
