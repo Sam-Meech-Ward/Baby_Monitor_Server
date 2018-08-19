@@ -3,8 +3,7 @@ const nodeMediaPrivateKey = process.env.NODE_MEDIA_PRIVATE_KEY || 'privateKey';
 const server = require('./HTTP/server');
 const app = server.createApp();
 
-const mediaServer = require('./mediaServer');
-mediaServer(nodeMediaPrivateKey, app);
+const mediaServer = require('./mediaServer')(nodeMediaPrivateKey, app);
 
 const httpServer = require('./httpServer');
 httpServer(app);
