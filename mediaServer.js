@@ -1,6 +1,6 @@
-const { NodeMediaServer } = require('node-media-server');
+const  NodeMediaServer  = require('./NodeMediaServer/NodeMediaServer');
  
-module.exports = (nodeMediaPrivateKey) => {
+module.exports = (nodeMediaPrivateKey, app) => {
   const config = {
     rtmp: {
       port: 1935,
@@ -9,10 +9,10 @@ module.exports = (nodeMediaPrivateKey) => {
       ping: 60,
       ping_timeout: 30
     },
-    http: {
-      port: 8000,
-      allow_origin: '*'
-    },
+    // http: {
+    //   port: 8000,
+    //   allow_origin: '*'
+    // },
     auth: {
       play: true,
       publish: true,
@@ -20,19 +20,18 @@ module.exports = (nodeMediaPrivateKey) => {
     }
   };
 
-  if (process.env.SSL_ONLY) {
-    config.https = {
-      port: 8443,
-      key:'./privatekey.pem',
-      cert:'./certificate.pem',
-    };
-  } 
+  // if (process.env.SSL_ONLY) {
+  //   config.https = {
+  //     port: 8443,
+  //     key:'./privatekey.pem',
+  //     cert:'./certificate.pem',
+  //   };
+  // } 
 
-  const start = () => {
-    var nms = new NodeMediaServer(config)
-    nms.run();
-  };
-
-  return {start};
+  const mediaServer = Object.create(NodeMediaServer);
+  mediaServer.setupMediaServer(config);
+  mediaServer.setupHTTPServer(config, app);
+  
+  return mediaServer;
 };
  
