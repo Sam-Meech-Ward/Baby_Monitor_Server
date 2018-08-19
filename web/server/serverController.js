@@ -25,7 +25,7 @@ exports.start = () => {
   mediaRequests.run();
   httpServers.run(
     { wsOnConnect: (ws, req) => {
-      mediaRequests.httpServer.onWsConnect(ws, req);
+      mediaRequests.httpServer.wsOnConnect(ws, req);
     }
   });
 };
