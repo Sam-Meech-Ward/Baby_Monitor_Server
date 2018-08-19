@@ -14,4 +14,4 @@ httpServer(app);
 // wsServer.start();
 
 server.createHTTPServers();
-server.run(mediaServer.httpServer.onConnect);
+server.run(mediaServer.httpServer.onConnect.bind(mediaServer.httpServer));
