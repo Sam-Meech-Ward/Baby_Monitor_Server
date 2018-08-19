@@ -1,18 +1,18 @@
 const nodeMediaPrivateKey = process.env.NODE_MEDIA_PRIVATE_KEY || 'privateKey';
 
-
 const server = require('./HTTP/server');
 const app = server.createApp();
-const mediaServer = require('./mediaServer')(nodeMediaPrivateKey, app);
 
-
+const mediaServer = require('./mediaServer');
+mediaServer(nodeMediaPrivateKey, app);
 
 const httpServer = require('./httpServer');
-// const wsServer = require('./wsServer');
-
 httpServer(app);
+
+// const wsServer = require('./wsServer');
 // wsServer.start();
 
 server.createHTTPServers();
+
 mediaServer.run();
-server.run(mediaServer.httpServer.onConnect.bind(mediaServer.httpServer));
+server.run({ wsOnConnect: mediaServer.httpServer.onConnect.bind(mediaServer.httpServer) });

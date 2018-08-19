@@ -39,7 +39,7 @@ const server = {
         this.httpsServer = Https.createServer(options, app);
       }
   },
-  run(wsOnConnect) {
+  run({ wsOnConnect }) {
     this.httpServer.listen(this.config.port, () => {
       Logger.log(`Node Media Http Server started on port: ${this.config.port}`);
     });
