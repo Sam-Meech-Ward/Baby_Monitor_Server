@@ -77,7 +77,7 @@ class NodeHttpServer {
 
   wsOnConnect(ws, req) {
     req.nmsConnectionType = 'ws';
-    wsOnConnect(req, ws);
+    this.onConnect(req, ws);
   }
 
 
